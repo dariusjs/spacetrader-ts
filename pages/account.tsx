@@ -1,9 +1,9 @@
 import Table from '../components/Table';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Account } from './types/spaceTrader';
+import { Account } from '../types/spaceTrader';
 
-function Ships() {
+function AccountOverview() {
   const columns = React.useMemo(
     () => [
       {
@@ -35,11 +35,17 @@ function Ships() {
       });
       const data = await result.json();
       const currentAccount = data.map((element: Account) => {
+        const loans = element.user.loans?.map((loans) => {
+          return JSON.stringify(loans);
+        });
+        const ships = element.user.ships?.map((loans) => {
+          return JSON.stringify(loans);
+        });
         return {
           col1: element.user.username,
           col2: element.user.credits,
-          col3: element.user.ships,
-          col4: element.user.loans
+          col3: ships,
+          col4: loans
         };
       });
       setData(currentAccount);
@@ -53,4 +59,4 @@ function Ships() {
   );
 }
 
-export default Ships;
+export default AccountOverview;

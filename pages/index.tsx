@@ -1,13 +1,14 @@
 import { parseCookies } from '../helpers';
 
 export default function Home({ loginDetails }: any) {
-  const loggedinUser = JSON.parse(loginDetails.coffeetrader);
+  // const loggedinUser = JSON.parse(loginDetails.spacetrader);
+
   return (
     <div>
       <div>
         <h2>
-          <p>CoffeeTrader</p>
-          <p>Signed in with: {loggedinUser.user}</p>
+          <p>SpaceTracer TS</p>
+          {/* <p>Signed in with: {loggedinUser.user}</p> */}
         </h2>
         <div></div>
       </div>
@@ -16,7 +17,7 @@ export default function Home({ loginDetails }: any) {
 }
 
 Home.getInitialProps = async ({ req }: any) => {
-  const loginDetails = parseCookies(req);
+  let loginDetails = parseCookies(req);
 
   return {
     loginDetails: loginDetails

@@ -33,3 +33,24 @@ export interface TakeLoanElement {
   status: string;
   type: string;
 }
+
+export interface Ships {
+  ships: Ship[];
+}
+
+export interface Ship {
+  type: string;
+  class: string;
+  maxCargo: number;
+  speed: number;
+  manufacturer: string;
+  plating: number;
+  weapons: number;
+  purchaseLocations?: PurchaseLocation[];
+}
+
+export interface PurchaseLocation {
+  system: string;
+  location: string;
+  price: number;
+}

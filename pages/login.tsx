@@ -5,13 +5,14 @@ const Login = () => {
   const [cookie, setCookie] = useCookies(['user']);
 
   const handleSignIn = async (event: any) => {
+    event.preventDefault();
     try {
       const user = event.target.username.value;
       const token = event.target.token.value;
 
-      setCookie('coffeetrader', JSON.stringify({ user: user, token: token }), {
+      setCookie('spacetrader', JSON.stringify({ user: user, token: token }), {
         path: '/',
-        maxAge: 3600, // Expires after 1hr
+        maxAge: 36000, // Expires after 1hr
         sameSite: true
       });
     } catch (err) {

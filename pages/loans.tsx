@@ -1,30 +1,39 @@
 import Table from '../components/Table';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Loan } from './types/spaceTrader';
+import { Loan } from '../types/spaceTrader';
 
 function Ships() {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'ammount',
-        accessor: 'col1'
+        Header: 'type',
+        accessor: 'col1',
+        Cell: ({ value }: any) => (
+          <Link href={{ pathname: 'api/loans', query: { type: value } }}>
+            <a>{value}</a>
+          </Link>
+        )
       },
       {
-        Header: 'collateral',
+        Header: 'ammount',
         accessor: 'col2'
       },
       {
-        Header: 'rate',
+        Header: 'collateral',
         accessor: 'col3'
       },
       {
-        Header: 'term (days)',
+        Header: 'rate',
         accessor: 'col4'
       },
       {
-        Header: 'type',
+        Header: 'term (days)',
         accessor: 'col5'
+      },
+      {
+        Header: '',
+        accessor: 'col6'
       }
     ],
     []
@@ -34,17 +43,29 @@ function Ships() {
 
   useEffect(() => {
     (async () => {
+      const requestLoan = async (event: any) => {
+        await fetch('/api/loans', {
+          method: 'POST'
+        });
+      };
+
       const result = await fetch('/api/loans', {
         method: 'GET'
       });
+
       const data = await result.json();
       const currentAccount = data.map((element: Loan) => {
         return {
-          col1: element.amount,
-          col2: element.collateralRequired,
-          col3: element.rate,
-          col4: element.termInDays,
-          col5: element.type
+          col1: element.type,
+          col2: element.amount,
+          col3: element.collateralRequired,
+          col4: element.rate,
+          col5: element.termInDays,
+          col6: (
+            <button onSubmit={requestLoan} type="submit">
+              Register
+            </button>
+          )
         };
       });
       setData(currentAccount);

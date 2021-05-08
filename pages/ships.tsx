@@ -1,30 +1,42 @@
 import Table from '../components/Table';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Ship } from '../types/spaceTrader';
 
-function Ships() {
+function ShipsOverview() {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
-        accessor: 'col1',
-        Cell: ({ value }: any) => (
-          <Link href={{ pathname: 'windTurbine', query: { windfarm: value } }}>
-            <a>{value}</a>
-          </Link>
-        )
+        Header: 'class',
+        accessor: 'class'
       },
       {
-        Header: 'Type',
-        accessor: 'col2'
+        Header: 'manufacturer',
+        accessor: 'manufacturer'
       },
       {
-        Header: 'Constructor',
-        accessor: 'col3'
+        Header: 'maxCargo',
+        accessor: 'maxCargo'
       },
       {
-        Header: 'Total Output kWh',
-        accessor: 'col4'
+        Header: 'plating',
+        accessor: 'plating'
+      },
+      {
+        Header: 'weapons',
+        accessor: 'weapons'
+      },
+      {
+        Header: 'speed',
+        accessor: 'speed'
+      },
+      {
+        Header: 'type',
+        accessor: 'type'
+      },
+      {
+        Header: 'purchaseLocations',
+        accessor: 'purchaseLocations'
       }
     ],
     []
@@ -32,19 +44,30 @@ function Ships() {
 
   const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const allWindFarms = windFarm.map((element: WindFarmType) => {
-  //       return {
-  //         col1: element.pk,
-  //         col2: element.type,
-  //         col3: element.manufacturer,
-  //         col4: element.kWOut,
-  //       };
-  //     });
-  //     setData(allWindFarms);
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      const result = await fetch('/api/ships', {
+        method: 'GET'
+      });
+      const data = await result.json();
+      const currentAccount = data.ships.map((element: Ship) => {
+        // const purchaseLocations = element.purchaseLocations?.map((locs) => {
+        //   return JSON.stringify(locs);
+        // });
+        return {
+          class: element.class,
+          manufacturer: element.manufacturer,
+          maxCargo: element.maxCargo,
+          plating: element.plating,
+          weapons: element.weapons,
+          speed: element.speed,
+          type: element.type
+          // purchaseLocations: purchaseLocations
+        };
+      });
+      setData(currentAccount);
+    })();
+  }, []);
 
   return (
     <div className="App">
@@ -53,9 +76,4 @@ function Ships() {
   );
 }
 
-// export async function getServerSideProps() {
-//   const user = await getUserInfo();
-//   return { props: { user } };
-// }
-
-export default Ships;
+export default ShipsOverview;
